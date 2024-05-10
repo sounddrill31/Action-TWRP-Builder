@@ -79,7 +79,7 @@ jobs:
     - name: Install OpenJDK
       run: |
         rm -rf openjdk6 openjdk6.tar.gz
-        curl -o openjdk6.tar.gz https://omansh.vercel.app/api/raw/?path=/sounddrill31/Mirrors/java/jvm.tar.gz
+        wget -O openjdk6.tar.gz https://omansh.vercel.app/api/raw/?path=/sounddrill31/Mirrors/java/jvm.tar.gz
         tar -xvf openjdk6.tar.gz -C openjdk6
         echo "ANDROID_JAVA_HOME=$(pwd)/openjdk6" >> "$GITHUB_ENV"
         echo "PATH=$ANDROID_JAVA_HOME/bin:$PATH" >> "$GITHUB_ENV"
