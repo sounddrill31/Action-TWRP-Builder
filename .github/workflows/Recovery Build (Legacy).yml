@@ -82,8 +82,7 @@ jobs:
         mkdir jdk -p
         wget -O jdk.tar.gz https://mirrors.huaweicloud.com/java/jdk/7u80-b15/jdk-7u80-linux-x64.tar.gz 
         tar -xvf jdk.tar.gz -C jdk
-        cd jdk || true
-        echo "ANDROID_JAVA_HOME=$(pwd)/jdk1.7.0_80" >> "$GITHUB_ENV"
+        echo "ANDROID_JAVA_HOME=$(pwd)/jdk/jdk1.7.0_80" >> "$GITHUB_ENV"
         echo "PATH=$ANDROID_JAVA_HOME/bin:$PATH" >> "$GITHUB_ENV"
         java -version
 
