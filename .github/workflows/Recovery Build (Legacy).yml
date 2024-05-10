@@ -77,11 +77,15 @@ jobs:
         sudo apt -y install gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev libxml2 lzop pngcrush schedtool squashfs-tools imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses5 python3
 
     - name: Install OpenJDK
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: '8'
+      run: |
+        rm -rf openjdk6 openjdk6.tar.gz
+        curl -o openjdk6.tar.gz https://omansh.vercel.app/api/raw/?path=/sounddrill31/Mirrors/java/jvm.tar.gz
+        tar -xvf openjdk6.tar.gz -C openjdk6
+        echo "ANDROID_JAVA_HOME=$(pwd)/openjdk6" >> "$GITHUB_ENV"
+        echo "PATH=$ANDROID_JAVA_HOME/bin:$PATH" >> "$GITHUB_ENV"
+        java -version
 
+        
     - name: Setup SSH Keys
       if: ${{ startsWith(github.event.inputs.MANIFEST_URL, 'git@github.com') }}
       uses: webfactory/ssh-agent@v0.5.4
@@ -146,6 +150,7 @@ jobs:
 
     - name: Building recovery
       run: |
+      java -version
         source build/envsetup.sh
         export ALLOW_MISSING_DEPENDENCIES=true
         lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
